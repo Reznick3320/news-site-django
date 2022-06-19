@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} - {{ block.super }} {% endblock %}
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    <p>Количество новостей - {{ object_list.count }}</p>
+    {% for new in object_list %}
+        <div class="card mb-3">
+            <div class="card-header">Категория: <a href="{{ new.category.get_absolute_url }}"> {{ new.category }} </a></div>
+            <div class="card-body">
+                <div class="media d-flex justify-content-between">
+                    {% if new.photo %}
+                        <img src="{{ new.photo.url }}" alt="photo" width="350" class="mr-3">
+                    {% else %}
+                        <img src="https://picsum.photos/id/200/300.jpg" width="350" alt="photo" class="mr-3">
+                    {% endif %}
+                    <div class="media-body" style="width: 70%; margin-left: 25px">
+                        <h5 class="card-title">{{ new.title }}</h5>
+                        <p class="card-text">{{ new.content|safe|truncatewords:75 }}</p>
+                        <a href="{{ new.get_absolute_url }}" class="btn btn-primary">Читать больше...</a>
+                    </div>
+                </div>   
+            </div>
+            <div class="card-footer text-muted">{{ new.create_up|date:"Y-m-d H:i:s" }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}
